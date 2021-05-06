@@ -13,7 +13,7 @@ after_success:
   - docker build -t debajyotifse2/multi-nginx ./nginx
   - docker build -t debajyotifse2/multi-server ./server
   - docker build -t debajyotifse2/multi-worker ./worker
-  # push images to docker hub
+  # Login docker hub
   - echo "$DOCKER_ID" | docker login -u "$DOCKER_ID" --password-stdin
   - docker push debajyotifse2/multi-client
   - docker push debajyotifse2/multi-nginx
