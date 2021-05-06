@@ -1,0 +1,23 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t debajyotifse2/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true debajyotifse2/react-test npm test
+
+after_success:
+  - docker build -t debajyotifse2/multi-client ./client
+  - docker build -t debajyotifse2/multi-nginx ./nginx
+  - docker build -t debajyotifse2/multi-server ./server
+  - docker build -t debajyotifse2/multi-worker ./worker
+  # push images to docker hub
+  - echo "$DOCKER_ID" | docker login -u "$DOCKER_ID" --password-stdin
+  - docker push debajyotifse2/multi-client
+  - docker push debajyotifse2/multi-nginx
+  - docker push debajyotifse2/multi-server
+  - docker push debajyotifse2/multi-worker
+
+
